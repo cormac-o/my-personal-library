@@ -15,3 +15,14 @@ FlaskAPI will be used to build the backend which will communicate with the datab
 AngularJS will be used to design the frontend which will present information to the user and retrieve data from the backend.
 
 Flask and Angular were chosen primarily due to my experience with the technologies during university, while PostgreSQL was chosen by recommendation from MS Copilot (Don't crucify me) - I have experience with relational databases through uni and work, but have not used this technology in particular, so I look forward to building on existing skills, developing new ones, and overall becoming a better developer.
+
+
+
+======================
+Setting up the backend
+======================
+
+To setup the backend, you need to first create the virtual environment. Run the following commands:
+- python -m venv venv
+- (Windows) venv\Scripts\activate
+- (MacOS) venv/bin/activate
