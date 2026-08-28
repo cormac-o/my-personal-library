@@ -18,11 +18,21 @@ Flask and Angular were chosen primarily due to my experience with the technologi
 
 
 
-======================
-Setting up the backend
-======================
+==================================
+Setting up and running the backend
+==================================
 
-To setup the backend, you need to first create the virtual environment. Run the following commands:
+To setup the backend, you need to first create the virtual environment. Run the following commands in the backend directory:
 - python -m venv venv
 - (Windows) venv\Scripts\activate
 - (MacOS) venv/bin/activate
+- To run: python app.py
+
+
+
+===================================
+Setting up and running the frontend
+===================================
+
+To setup the frontend, run the following command(s) in the frontend directory:
+- ng serve
