@@ -12,29 +12,31 @@ EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 PASSWORD_REGEX = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'  # Minimum eight characters, at least one letter and one number
 
 
-@auth_bp.route('/api/v1.0/login', methods=['GET'])
+@auth_bp.route('/api/v1.0/login', methods=['POST'])
 def login():
-    auth = request.authorization
+    auth = request.get_json()  # Expecting JSON payload with "username" and "password"
 
     #Verify that user has provided credentials
-    if not auth or not auth.username or not auth.password:
+    if not auth or not auth.get("username") or not auth.get("password"):
         return make_response(jsonify({'message': 'Missing credentials'}), 401)
 
+    username = auth.get("username")
+    password = auth.get("password")
+
     #Find user in database
-    if auth.username:
-        user = db.session.execute(text("SELECT * FROM users WHERE username = :username;"), {'username': auth.username}).fetchone()
+    if username:
+        user = db.session.execute(text("SELECT * FROM users WHERE username = :username;"), {'username': username}).fetchone()
 
     if not user:
         return make_response(jsonify({'message': 'User not found'}), 401)
 
     #Check if password is correct.
-    elif bcrypt.checkpw(auth.password.encode('utf-8'), user.passhash.encode('utf-8')):
+    if bcrypt.checkpw(password.encode('utf-8'), user.passhash.encode('utf-8')):
         return make_response(jsonify({'message': 'Login successful'}), 200)
-
     else:
         return make_response(jsonify({'message': 'Wrong password'}), 401)
 
-@auth_bp.route('/api/v1.0/logout', methods=['GET'])
+@auth_bp.route('/api/v1.0/logout', methods=['POST'])
 def logout():
     return make_response(jsonify({'message': 'Logout route'}), 200)
 
