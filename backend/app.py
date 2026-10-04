@@ -6,6 +6,7 @@ import os
 # Import Blueprints
 from blueprints.users.users import users_bp
 from blueprints.auth.auth import auth_bp
+from blueprints.media.__init__ import media_bp
 
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ app.config['SECRET_KEY'] = os.getenv('secret_key')
 # Register Blueprints
 app.register_blueprint(users_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(media_bp)
 
 load_dotenv()  # Load environment variables from .env file
 app.config['SQLALCHEMY_DATABASE_URI'] = (
