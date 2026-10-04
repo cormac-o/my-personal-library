@@ -6,7 +6,7 @@ import { Landing } from './components/landing/landing';
   selector: 'app-root',
   imports: [RouterOutlet, Landing],
   templateUrl: './app.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './app.scss'
 })
 export class App {
