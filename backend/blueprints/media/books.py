@@ -1,4 +1,5 @@
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
+from . import media_bp
 from sqlalchemy import text
 from database import db
 import uuid
@@ -36,3 +37,21 @@ def get_book_by_media_id(media_id):
         return make_response(jsonify({'message': 'Book not found'}), 404)
 
     return make_response(jsonify(dict(result)), 200)
+
+@media_bp.route('/api/v1.0/media/books', methods=['GET'])
+def get_all_books():
+
+    page = request.args.get('page', default=1, type=int)
+    limit = request.args.get('limit', default=10, type=int)
+    offset = (page - 1) * limit
+    
+    result = db.session.execute(text("SELECT m.media_id, b.book_id, b.author, m.year, m.title " \
+    "FROM media m " \
+    "JOIN books b on m.media_id = b.media_id " \
+    "ORDER BY author " \
+    "LIMIT :limit OFFSET :offset ;"),
+    {'limit': limit, 'offset': offset}).mappings().all()
+        
+    books = [dict(row) for row in result]
+    
+    return make_response(jsonify(books), 200)
