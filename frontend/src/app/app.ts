@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Landing } from './components/landing/landing';
 
@@ -6,6 +6,7 @@ import { Landing } from './components/landing/landing';
   selector: 'app-root',
   imports: [RouterOutlet, Landing],
   templateUrl: './app.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.scss'
 })
 export class App {
