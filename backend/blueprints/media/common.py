@@ -41,3 +41,18 @@ def create_media():
         case _:
             return make_response(jsonify({'message': 'Unsupported media type'}), 400)
 
+@media_bp.route('/api/v1.0/media', methods=['GET'])
+def get_all_media():
+
+    page = request.args.get('page', default=1, type=int)
+    limit = request.args.get('limit', default=10, type=int)
+    offset = (page - 1) * limit
+
+    result = db.session.execute(text("SELECT * FROM media " \
+    "ORDER BY title " \
+    "LIMIT :limit OFFSET :offset ;"),
+    {'limit': limit, 'offset': offset}).mappings().all()
+    
+    media_items = [dict(row) for row in result]
+
+    return make_response(jsonify(media_items), 200)
