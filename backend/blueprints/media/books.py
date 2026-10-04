@@ -23,3 +23,16 @@ def create_book(media_id, data):
     book_id = row[0]
 
     return make_response(jsonify({'message': 'Book created successfully', 'book_id': book_id}), 201)
+
+def get_book_by_media_id(media_id):
+    result = db.session.execute(text(
+        "SELECT m.*, b.author FROM media m " \
+        "JOIN books b on m.media_id = b.media_id " \
+        "WHERE m.media_id = :media_id;"),
+        {'media_id': media_id}
+    ).mappings().first()
+
+    if not result:
+        return make_response(jsonify({'message': 'Book not found'}), 404)
+
+    return make_response(jsonify(dict(result)), 200)

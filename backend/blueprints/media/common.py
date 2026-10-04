@@ -4,7 +4,7 @@ from sqlalchemy import text
 from database import db
 import uuid
 
-from .books import create_book
+from .books import create_book, get_book_by_media_id
 
 @media_bp.route('/api/v1.0/media', methods=['POST'])
 def create_media():
@@ -56,3 +56,25 @@ def get_all_media():
     media_items = [dict(row) for row in result]
 
     return make_response(jsonify(media_items), 200)
+
+@media_bp.route('/api/v1.0/media/<media_id>', methods=['GET'])
+def get_media_by_id(media_id):
+
+    result = db.session.execute(text("SELECT * FROM media WHERE media_id = :media_id;"),
+    {'media_id': media_id}).mappings().first()
+
+    if not result:
+        return make_response(jsonify({'message': 'Media item not found'}), 404)
+
+    media_item = dict(result)
+
+    match media_item['type']:
+        case 'book':
+            return get_book_by_media_id(media_id)
+        case 'movie':
+            # Implement movie creation logic here
+            return make_response(jsonify({'message': 'Movie creation not implemented yet'}), 501)
+        case _:
+            return make_response(jsonify({'message': 'Unsupported media type'}), 400)
+
+    return make_response(jsonify(media_item), 200)
