@@ -2,8 +2,15 @@ from flask import Blueprint, jsonify, make_response, request
 from database import db
 from sqlalchemy import text
 import bcrypt
+import re
+import uuid
 
 auth_bp = Blueprint('auth', __name__)
+
+USERNAME_REGEX = r'^[a-zA-Z0-9_]{3,}$'  # Minimum three characters, alphanumeric and underscores only
+EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' 
+PASSWORD_REGEX = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'  # Minimum eight characters, at least one letter and one number
+
 
 @auth_bp.route('/api/v1.0/login', methods=['GET'])
 def login():
@@ -35,4 +42,34 @@ def logout():
 def register():
     #Snippet to generate passhash:
     #passhash = bcrypt.hashpw((<plaintext password>.encode("utf-8")), bcrypt.gensalt()).decode("utf-8")
-    return make_response(jsonify({'message': 'Register route'}), 200)
+    
+    if ( request.form and 
+        'username' in request.form and
+        'email' in request.form and
+        'password' in request.form):
+
+        #data:
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        if not re.match(EMAIL_REGEX, email):
+            return make_response(jsonify({'message': 'Invalid email format'}), 400)
+
+        if not re.match(PASSWORD_REGEX, password):
+            return make_response(jsonify({'message': 'Invalid password format'}), 400)
+
+        if not re.match(USERNAME_REGEX, username):
+            return make_response(jsonify({'message': 'Invalid username format'}), 400)
+
+        user_id = str(uuid.uuid4())  # Generate a unique user ID
+        passhash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+        result = db.session.execute(text("INSERT INTO users (user_id,username, email, passhash)" \
+        "VALUES (:user_id, :username, :email, :passhash) RETURNING user_id;"), 
+        { 'user_id': user_id, 'username': username, 'email': email, 'passhash': passhash })
+
+        db.session.commit()
+
+        return make_response(jsonify({'message': 'User registered successfully'}), 201)
