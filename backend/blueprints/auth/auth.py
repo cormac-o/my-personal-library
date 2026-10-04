@@ -1,9 +1,12 @@
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, current_app, jsonify, make_response, request
 from database import db
 from sqlalchemy import text
 import bcrypt
 import re
 import uuid
+
+import jwt
+from datetime import datetime, timedelta
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -32,7 +35,21 @@ def login():
 
     #Check if password is correct.
     if bcrypt.checkpw(password.encode('utf-8'), user.passhash.encode('utf-8')):
-        return make_response(jsonify({'message': 'Login successful'}), 200)
+
+        #Here's where token generation happens. For now, we'll just return a success message.
+        access_token = jwt.encode(
+            {
+                'user_id': str(user.user_id),
+                'exp': datetime.utcnow() + timedelta(hours=1)  # Token expires in 1 hour
+            },
+            current_app.config['SECRET_KEY'],
+            algorithm='HS256'
+        )
+
+        return make_response(jsonify({
+            'message': 'Login successful',
+            'access_token': access_token
+        }), 200)
     else:
         return make_response(jsonify({'message': 'Wrong password'}), 401)
 

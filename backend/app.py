@@ -10,6 +10,9 @@ from blueprints.auth.auth import auth_bp
 
 app = Flask(__name__)
 
+# Load secret key from environment variable
+app.config['SECRET_KEY'] = os.getenv('secret_key')
+
 # Register Blueprints
 app.register_blueprint(users_bp)
 app.register_blueprint(auth_bp)
