@@ -6,6 +6,7 @@ import re
 import uuid
 import jwt
 from datetime import datetime, timedelta
+from decorators import token_required
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -52,8 +53,13 @@ def login():
         return make_response(jsonify({'message': 'Wrong password'}), 401)
 
 @auth_bp.route('/api/v1.0/logout', methods=['POST'])
-def logout():
-    return make_response(jsonify({'message': 'Logout route'}), 200)
+@token_required
+def logout(user_id):
+    db.session.execute(text(
+        "DELETE FROM refresh_tokens WHERE user_id = :uid;"), {'uid': user_id}
+    )
+    db.session.commit()
+    return make_response(jsonify({'message': 'Logged Out Successfully'}), 200)
 
 @auth_bp.route('/api/v1.0/register', methods=['POST'])
 def register():
