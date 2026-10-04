@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, make_response
+from decorators import token_required
 from database import db
 from sqlalchemy import text
 
@@ -12,7 +13,8 @@ def get_users():
 
     return make_response(jsonify(users), 200)
 
-#This will test the decorator for Login Required. It will return a 401 if the user is not logged in.
-@users_bp.route('/api/v1.0/users/testLogin', methods=['GET'])
-def test_login():
-    return make_response(jsonify({'message': 'Login successful'}), 200)
+#This will test the decorator for Token Required. It will return a 401 if the user is not logged in.
+@users_bp.route('/api/v1.0/users/testToken', methods=['GET'])
+@token_required
+def test_token(user_id):
+    return make_response(jsonify({'message': 'Token is valid', 'user_id': user_id}), 200)

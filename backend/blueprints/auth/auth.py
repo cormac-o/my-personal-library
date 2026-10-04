@@ -4,7 +4,6 @@ from sqlalchemy import text
 import bcrypt
 import re
 import uuid
-
 import jwt
 from datetime import datetime, timedelta
 
@@ -13,7 +12,6 @@ auth_bp = Blueprint('auth', __name__)
 USERNAME_REGEX = r'^[a-zA-Z0-9_]{3,}$'  # Minimum three characters, alphanumeric and underscores only
 EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' 
 PASSWORD_REGEX = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'  # Minimum eight characters, at least one letter and one number
-
 
 @auth_bp.route('/api/v1.0/login', methods=['POST'])
 def login():
