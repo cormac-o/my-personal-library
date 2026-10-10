@@ -1,4 +1,5 @@
 from flask import Flask, make_response
+from flask_cors import CORS
 from database import db
 from dotenv import load_dotenv
 import os
@@ -10,6 +11,7 @@ from blueprints.media.__init__ import media_bp
 
 
 app = Flask(__name__)
+CORS(app)
 
 # Load secret key from environment variable
 app.config['SECRET_KEY'] = os.getenv('secret_key')

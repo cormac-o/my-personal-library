@@ -1,1 +1,19 @@
-<h1>books works!</h1>
+<h1 class="text-3xl font-bold mb-6">Books</h1>
+
+<h1 class="text-3xl font-bold mb-6 text-brand-dark">Books</h1>
+
+<div class="space-y-4">
+  @for (book of books_list; track book.book_id) {
+    <div class="bg-brand-light border border-brand-dark/20 shadow-sm rounded-lg p-4">
+      <h3 class="text-xl font-semibold text-brand-dark">{{ book.title }}</h3>
+      <p class="text-gray-700 mt-1">Author: {{ book.author }}</p>
+      <p class="text-gray-600 text-sm">Year: {{ book.year }}</p>
+    </div>
+  }
+</div>
+
+<p>Data loaded:</p>
+<pre>{{ books_list | json }}</pre> <!-- can be reused elsewhere to verify data loading -->
+
+
+
