@@ -1,10 +1,9 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Landing } from './components/landing/landing';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Landing],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './app.scss'
