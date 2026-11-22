@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { WebService } from '../../services/web-service'; 
 import { CommonModule } from '@angular/common';
 
@@ -12,20 +12,20 @@ import { CommonModule } from '@angular/common';
 })
 export class Books {
 
-  books_list: any = [];
+  books_list = signal<any>([]);
 
   page: number = 1;
 
   constructor(private webService: WebService) {}
 
   ngOnInit(){
-    this.getBooks();
+    this.loadBooks();
   }
 
-  getBooks() {
+  loadBooks() {
     this.webService.getBooks(this.page).subscribe((response: any) => {
-      this.books_list = response;
-      console.log(this.books_list);
+      this.books_list.set(response);
     });
   }
+
 }
