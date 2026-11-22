@@ -1,11 +1,13 @@
-import { Service, inject } from '@angular/core';
+import { Injectable} from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
-@Service()
+@Injectable({
+    providedIn: 'root'
+})
 export class WebService {
 
-    private http = inject(HttpClient);
+    constructor(private http: HttpClient) {}
 
     pageSize = 10;
 
