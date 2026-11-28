@@ -16,3 +16,24 @@ Register User, Login/Logout, view user details, update user details, delete user
 - As a user, I want to delete my account so that my personal details are removed.
 - As a user, I want to login with a password so that my details are protected.
 - As a user, I want to logout so that my details cannot be accessed when I am not using the app.
+
+
+============================
+NEXT STEPS
+============================
+I've created View All Books, and View One Book
+
+Next:
+- Create Book
+- Delete Book
+- Update Book
+
+Then:
+- User Authentication (login, logout, access-control)
+- User CRUD (register, update details, delete user)
+- Personal Notes CRUD (separate the media item from the users' own instance of it)
+
+- Expand functionality to Movies
+- Validation and Error Handling
+- Clean up UI
+- Create Migration Files for Database and Test Data
