@@ -21,4 +21,10 @@ export class WebService {
         });
     }
 
+    getOneBook(id: any) {
+        // http://localhost:5000/api/v1.0/media/books/<id>
+        return this.http.get<any>(
+            'http://localhost:5000/api/v1.0/media/books/' + id
+        );
+    }
 }

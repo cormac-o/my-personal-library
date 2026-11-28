@@ -1,1 +1,7 @@
-<p>book works!</p>
+<h1 class="text-3xl font-bold mb-6">{{ this.book_info().title }}</h1>
+
+<div class="p-4 border rounded-lg shadow">
+    <h3 class="text-xl font-bold">{{ this.book_info().title }}</h3>
+    <p>Author: {{ this.book_info().author }}</p>
+    <p>Year: {{ this.book_info().year }}</p>
+</div>

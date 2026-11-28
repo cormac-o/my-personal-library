@@ -25,6 +25,7 @@ def create_book(media_id, data):
 
     return make_response(jsonify({'message': 'Book created successfully', 'book_id': book_id}), 201)
 
+@media_bp.route('/api/v1.0/media/books/<string:media_id>', methods=['GET'])
 def get_book_by_media_id(media_id):
     result = db.session.execute(text(
         "SELECT m.*, b.author FROM media m " \

@@ -30,8 +30,8 @@ export class Books {
     });
   }
 
-  goToBook(bookId: string){
-    console.log('GOING TO BOOK: ', bookId);
+  goToBook(mediaId: string){
+    console.log('GOING TO BOOK: ', mediaId);
   }
 
 }
