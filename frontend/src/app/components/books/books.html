@@ -4,10 +4,12 @@
 
 <div class="grid gap-4 p-6">
   @for (book of books_list(); track book.book_id) {
-    <div class="p-4 border rounded-lg shadow">
+    
+    <div class="p-4 border rounded-lg shadow" [routerLink]="['/books', book.book_id]">
       <h3 class="text-xl font-bold">{{ book.title }}</h3>
       <p>Author: {{ book.author }}</p>
       <p>Year: {{ book.year }}</p>
+      <a (click)="goToBook(book.book_id)" class="text-blue-500 hover:text-blue-700">More info -></a>
     </div>
   }
 </div>
